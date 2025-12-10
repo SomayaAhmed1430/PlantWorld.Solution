@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using PlantWorld.ApiProvider.Models;
+using PlantWorld.ApiProvider.Repositories.Implementations;
+using PlantWorld.ApiProvider.Repositories.Interfaces;
 
 namespace PlantWorld.ApiProvider
 {
@@ -18,6 +20,8 @@ namespace PlantWorld.ApiProvider
                 options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });
 
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
