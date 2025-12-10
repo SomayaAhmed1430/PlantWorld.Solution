@@ -1,0 +1,6 @@
+@PlantWorld.ApiProvider_HostAddress = http://localhost:5036
+
+GET {{PlantWorld.ApiProvider_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
