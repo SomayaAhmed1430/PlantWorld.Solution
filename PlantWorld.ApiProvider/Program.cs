@@ -20,6 +20,15 @@ namespace PlantWorld.ApiProvider
                 options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", policy => { 
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
@@ -35,6 +44,9 @@ namespace PlantWorld.ApiProvider
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStaticFiles();
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 
