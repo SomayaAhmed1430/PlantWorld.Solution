@@ -1,3 +1,6 @@
+using PlantWorld.MvcConsumer.Services.Implementations;
+using PlantWorld.MvcConsumer.Services.Interfaces;
+
 namespace PlantWorld.MvcConsumer
 {
     public class Program
@@ -8,6 +11,11 @@ namespace PlantWorld.MvcConsumer
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpClient<ICategoryService, CategoryService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7190/"); 
+            });
 
             var app = builder.Build();
 
