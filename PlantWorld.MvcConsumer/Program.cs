@@ -16,6 +16,10 @@ namespace PlantWorld.MvcConsumer
             {
                 client.BaseAddress = new Uri("https://localhost:7190/"); 
             });
+            builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7190/");
+            });
 
             var app = builder.Build();
 
