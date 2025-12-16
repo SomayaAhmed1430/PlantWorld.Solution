@@ -1,0 +1,233 @@
+﻿body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* خلفية بيضاء */
+    direction: rtl;
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 220px;
+    background-color: #05796B; /* أسود */
+    color: #fff; /* نص أبيض */
+    padding: 20px;
+}
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .sidebar ul li {
+            padding: 10px 0;
+        }
+
+            .sidebar ul li a {
+                color: #fff;
+                text-decoration: none;
+                display: block;
+                padding: 8px 10px;
+                border-radius: 4px;
+            }
+
+                .sidebar ul li a:hover {
+                    background-color: #222;
+                }
+
+.main-content {
+    position: relative;
+    transform: translateX(-260px);
+    padding: 20px;
+    background-color: #fff;
+    color: #05796B;
+}
+
+/* الأزرار */
+button, .btn {
+    background-color: #05796B;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    button:hover, .btn:hover {
+        background-color: #333;
+    }
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+    form label {
+        display: block;
+        margin-bottom: 6px;
+        color: #05796B;
+        font-weight: 500;
+    }
+
+    form input[type="text"],
+    form input[type="file"],
+    form textarea,
+    form select {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        color: #05796B;
+    }
+
+    form input[type="submit"],
+    form button,
+    form .btn {
+        background-color: #05796B;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        form input[type="submit"]:hover,
+        form button:hover,
+        form .btn:hover {
+            background-color: #333;
+        }
+
+.table-content {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #000;
+    color: #fff;
+    text-align: right;
+}
+
+    thead th {
+        padding: 12px;
+    }
+
+tbody td {
+    padding: 10px;
+    color: #000;
+    border-top: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+img, video {
+    height: 50px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+}
+
+.btn-info {
+    background-color: #05796B;
+    color: #fff;
+    border: none;
+}
+
+    .btn-info:hover {
+        background-color: #333;
+    }
+
+.btn-danger {
+    background-color: #9f1c1c;
+    color: #fff;
+    border: none;
+}
+
+    .btn-danger:hover {
+        background-color: #7a1010;
+    }
+
+.btn-success {
+    background-color: #05796B;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+}
+
+    .btn-success:hover {
+        background-color: #333;
+    }
+
+@media screen and (max-width: 1000px) {
+    .dashboard-container {
+        display: block;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .sidebar {
+        position: unset;
+        width: 100%;
+        height: 30px;
+    }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            margin: 0;
+        }
+
+            .sidebar ul li {
+                padding: 0;
+            }
+
+    .main-content {
+        transform: translateX(0); /* عرض المحتوى الرئيسي بالكامل */
+        padding: 20px;
+    }
+
+    .table {
+        width: 800px;
+    }
+}
