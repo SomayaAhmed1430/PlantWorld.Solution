@@ -12,13 +12,14 @@ namespace PlantWorld.MvcConsumer
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            var apiBaseUrl = "https://localhost:7190/";
             builder.Services.AddHttpClient<ICategoryService, CategoryService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7190/"); 
+                client.BaseAddress = new Uri(apiBaseUrl); 
             });
             builder.Services.AddHttpClient<IProductService, ProductService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7190/");
+                client.BaseAddress = new Uri(apiBaseUrl);
             });
 
             var app = builder.Build();
