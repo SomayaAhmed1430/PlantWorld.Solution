@@ -1,0 +1,76 @@
+﻿@model PlantWorld.MvcConsumer.Models.ProductDTOs.ProductCreateDTO
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Create Product";
+}
+
+<h2 class="mb-4">إضافة منتج جديد</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label">الإسم </label>
+        <input asp-for="Name" class="form-control" placeholder="أدخل إسم المنتج" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label">الوصف (إختياري)</label>
+        <textarea asp-for="Description" class="form-control" placeholder="أدخل الوصف"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">القسم</label>
+        <select asp-for="CategoryId"
+                asp-items="ViewBag.Categories"
+                class="form-select">
+            <option value="">-- اختر القسم --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Price" class="form-label">السعر</label>
+        <textarea asp-for="Price" class="form-control" placeholder="أدخل سعر المنتج"></textarea>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="imageFile" class="form-label">إختار الصورة (إختياري)</label>
+        <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">عرض:</label><br />
+        <img id="preview" src="" alt="Image Preview"
+             style="max-width: 250px; display:none; border:1px solid #ccc; border-radius:8px;" />
+    </div>
+
+    <button type="submit" class="btn btn-success">حفظ</button>
+    <a asp-action="Index" class="btn btn-secondary">الرجوع إلى القائمة</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // عرض البريفيو قبل الحفظ
+        const fileInput = document.getElementById('imageFile');
+        const preview = document.getElementById('preview');
+
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+}

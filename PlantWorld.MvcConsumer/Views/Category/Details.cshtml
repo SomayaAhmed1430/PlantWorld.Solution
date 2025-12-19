@@ -36,9 +36,13 @@
     </div>
 
 
-    <br /><br /><br /><br />
+<br /><br /><br /><br />
 
-    <h3>المنتجات الموجوده في القسم دا:</h3>
+<h3>المنتجات الموجوده في القسم دا:</h3>
+
+<a asp-controller="Product" asp-action="Create" asp-route-categoryId="@Model.Category.Id" class="btn btn-primary mb-3">
+    إضافة منتج جديد
+</a>
 
 @if (!Model.Products.Any())
 {
