@@ -1,0 +1,40 @@
+﻿@model PlantWorld.MvcConsumer.Models.CategoryDTOs.CategoryWithProductCountDTO
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Delete Categories";
+}
+
+<h2 class="text-danger mb-4" style="color: red">؟! هل انت متأكد من حذف هذا القسم</h2>
+
+<div class="container mt-5">
+
+    <dl class="row">
+        <dt class="col-sm-3">الإسم: @Model.Name</dt>
+        @* <dd class="col-sm-9">@Model.Name</dd> *@
+
+        <dt class="col-sm-3">الوصف: @Model.Description</dt>
+        @* <dd class="col-sm-9">@Model.Description</dd> *@
+
+        <dt class="col-sm-3">عدد المنتجات في هذا القسم: @Model.ProductCount</dt>
+
+        @if (!string.IsNullOrEmpty(Model.ImgUrl))
+        {
+            <dt class="col-sm-3">الصورة: </dt>
+            <dd class="col-sm-9">
+                <img src="@Model.ImgUrl" alt="@Model.Name" width="120" height="120" class="rounded border" />
+            </dd>
+        }
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> حذف
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">
+            <i class="bi bi-arrow-left"></i> الرجوع
+        </a>
+    </form>
+</div>

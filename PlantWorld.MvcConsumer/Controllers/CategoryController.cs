@@ -118,6 +118,25 @@ namespace PlantWorld.MvcConsumer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
+        // GET: Category/Delete/id
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await _categoryService.GetByIdAsync(id);
+            if (category == null)
+                return NotFound();
+            return View(category);
+        }
+
+
+        // POST: Category/Delete/id
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _categoryService.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+
+        }
     }
 }
