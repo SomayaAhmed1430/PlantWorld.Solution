@@ -37,5 +37,15 @@ namespace PlantWorld.MvcConsumer.Services.Implementations
         {
             await _httpClient.PutAsJsonAsync($"api/Product/{id}", productDto);
         }
+
+
+
+        public async Task<IEnumerable<ProductDTO>> GetByCategoryAsync(int categoryId)
+        {
+            return await _httpClient
+                .GetFromJsonAsync<IEnumerable<ProductDTO>>($"api/Product/ByCategory/{categoryId}")
+                ?? Enumerable.Empty<ProductDTO>();
+        }
+
     }
 }

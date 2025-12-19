@@ -7,9 +7,11 @@ namespace PlantWorld.MvcConsumer.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly IProductService _productService;
+        public CategoryController(ICategoryService categoryService, IProductService productService)
         {
             _categoryService = categoryService;
+            _productService = productService;
         }
 
         // GET: Category
@@ -53,6 +55,9 @@ namespace PlantWorld.MvcConsumer.Controllers
 
             // نبعت للـ API
             await _categoryService.AddAsync(categoryDto);
+
+            TempData["AlertMessage"] = "تم إضافة القسم بنجاح!";
+            TempData["AlertType"] = "success";
 
             return RedirectToAction(nameof(Index));
 
@@ -115,6 +120,9 @@ namespace PlantWorld.MvcConsumer.Controllers
             // نبعت للـ API
             await _categoryService.UpdateAsync(id, categoryDto);
 
+            TempData["AlertMessage"] = "تم تحديث القسم بنجاح!";
+            TempData["AlertType"] = "success";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -135,6 +143,10 @@ namespace PlantWorld.MvcConsumer.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _categoryService.DeleteAsync(id);
+
+            TempData["AlertMessage"] = "تم حذف القسم بنجاح!";
+            TempData["AlertType"] = "danger";
+
             return RedirectToAction(nameof(Index));
 
         }
@@ -143,9 +155,20 @@ namespace PlantWorld.MvcConsumer.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var category = await _categoryService.GetByIdAsync(id);
+
             if (category == null)
                 return NotFound();
-            return View(category);
+
+            var products = await _productService.GetAllAsync();
+            var productsInCategory = products.Where(p => p.CategoryId == id);
+
+            var viewModel = new CategoryDetailsViewModel
+            {
+                Category = category,
+                Products = productsInCategory
+            };
+
+            return View(viewModel);
         }
     }
 }

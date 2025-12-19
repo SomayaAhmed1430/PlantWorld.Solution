@@ -9,5 +9,9 @@ namespace PlantWorld.MvcConsumer.Services.Interfaces
         Task AddAsync(ProductCreateDTO productDto);
         Task UpdateAsync(int id, ProductUpdateDTO productDto);
         Task DeleteAsync(int id);
+
+
+        Task<IEnumerable<ProductDTO>> GetByCategoryAsync(int categoryId);
+
     }
 }

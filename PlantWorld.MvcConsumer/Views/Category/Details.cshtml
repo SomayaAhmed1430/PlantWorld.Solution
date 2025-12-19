@@ -1,5 +1,4 @@
-﻿@model PlantWorld.MvcConsumer.Models.CategoryDTOs.CategoryWithProductCountDTO
-
+﻿@model PlantWorld.MvcConsumer.Models.CategoryDTOs.CategoryDetailsViewModel
 @{
     Layout = "~/Views/Shared/_DashboardLayout.cshtml";
     ViewData["Title"] = "Category Details";
@@ -10,29 +9,74 @@
 <div class="card shadow-sm p-4" style="max-width: 600px;">
     <div class="mb-3">
         <h5 class="fw-bold text-secondary">الإسم:</h5>
-        <p class="form-control-plaintext">@Model.Name</p>
+        <p class="form-control-plaintext">@Model.Category.Name</p>
     </div>
 
     <div class="mb-3">
         <h5 class="fw-bold text-secondary">الوصف:</h5>
-        <p class="form-control-plaintext">@Model.Description</p>
+        <p class="form-control-plaintext">@Model.Category.Description</p>
     </div>
 
     <div class="mb-3">
         <h5 class="fw-bold text-secondary">الصورة:</h5>
-        @if (!string.IsNullOrEmpty(Model.ImgUrl))
+        @if (!string.IsNullOrEmpty(Model.Category.ImgUrl))
         {
-            <img src="@Model.ImgUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="height: 150px; width: 300px; margin-bottom: 20px" />
+            <img src="@Model.Category.ImgUrl" alt="@Model.Category.Name" class="img-fluid rounded shadow-sm" style="height: 150px; width: 300px; margin-bottom: 20px" />
         }
         else
         {
-            <p class="text-muted">لا توجد صورة متاحه لهذا القسم.</p>
+            <p class="text-muted">مفيش صور متاحه القسم دا.</p>
         }
     </div>
 
     <div class="mt-4">
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">تعديل</a>
-        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">حذف</a>
-        <a asp-action="Index" class="btn btn-secondary">الرجوع إلى القائمة</a>
+        <a asp-action="Edit" asp-route-id="@Model.Category.Id" class="btn btn-warning me-2">تعديل</a>
+        <a asp-action="Delete" asp-route-id="@Model.Category.Id" class="btn btn-danger">حذف</a>
+        <a asp-action="Index" class="btn btn-secondary">ارجع للقائمة</a>
     </div>
+
+
+    <br /><br /><br /><br />
+
+    <h3>المنتجات الموجوده في القسم دا:</h3>
+
+@if (!Model.Products.Any())
+{
+    <p>مفيش منتجات في القسم دا</p>
+}else 
+{
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>الأسم</th>
+            <th>الصورة</th>
+            <th>الوصف</th>
+            <th>السعر</th>
+        </tr>
+    </thead>
+            <tbody>
+
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.ImgUrl))
+                    {
+                        <img src="@product.ImgUrl" class="card-img-top" />
+                    }
+                </td>
+                <td>@product.Description</td>
+                <td>@product.Price جنيه</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}           
+
+
+
+
+    
+
 </div>
