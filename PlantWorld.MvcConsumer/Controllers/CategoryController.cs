@@ -138,5 +138,14 @@ namespace PlantWorld.MvcConsumer.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        // GET: Category/Details/id
+        public async Task<IActionResult> Details(int id)
+        {
+            var category = await _categoryService.GetByIdAsync(id);
+            if (category == null)
+                return NotFound();
+            return View(category);
+        }
     }
 }
