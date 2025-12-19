@@ -57,5 +57,67 @@ namespace PlantWorld.MvcConsumer.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        // GET: Category/Edit/id
+        public async Task<IActionResult> Edit(int id)
+        {
+            var category = await _categoryService.GetByIdAsync(id);
+            if (category == null)
+                return NotFound();
+
+            var categoryUpdateDto = new CategoryUpdateDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                ImgUrl = category.ImgUrl,
+                Description = category.Description
+            };
+
+            return View(categoryUpdateDto);
+        }
+
+        // POST: Category/Edit/id
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, CategoryUpdateDTO categoryDto, IFormFile? imageFile)
+        {
+            if (id != categoryDto.Id)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return View(categoryDto);
+
+            // نجيب الكاتيجوري القديمة
+            var existingCategory = await _categoryService.GetByIdAsync(id);
+            if (existingCategory == null)
+                return NotFound();
+
+            // لو في صورة جديدة
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/categories");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await imageFile.CopyToAsync(stream);
+
+                categoryDto.ImgUrl = "/images/categories/" + fileName;
+            }
+            else
+            {
+                // مفيش صورة → نحتفظ بالقديمة
+                categoryDto.ImgUrl = existingCategory.ImgUrl;
+            }
+
+            // نبعت للـ API
+            await _categoryService.UpdateAsync(id, categoryDto);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        
     }
 }

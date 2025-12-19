@@ -1,0 +1,78 @@
+﻿@model PlantWorld.MvcConsumer.Models.CategoryDTOs.CategoryUpdateDTO
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Edit Category";
+}
+
+<h2 class="mb-4">Edit Category</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label">الإسم</label>
+        <input asp-for="Name" class="form-control" placeholder="أدخل إسم القسم" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label">الوصف (إختياري)</label>
+        <textarea asp-for="Description" class="form-control" placeholder="أدخل الوصف"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="imageFile" class="form-label">إختار الصورة (إختياري)</label>
+        <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">الصورة الحالية:</label><br />
+        @if (!string.IsNullOrEmpty(Model.ImgUrl))
+        {
+            <img src="@Model.ImgUrl" alt="Current Image"
+                 style="max-width: 250px; border:1px solid #ccc; border-radius:8px;" id="currentImg" />
+        }
+        else
+        {
+            <p class="text-muted">لم يتم رفع الصورة.</p>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">عرض (الصورة الجديدة):</label><br />
+        <img id="preview" src="" alt="Image Preview"
+             style="max-width: 250px; display:none; border:1px solid #ccc; border-radius:8px;" />
+    </div>
+
+    <button type="submit" class="btn btn-success">تحديث</button>
+    <a asp-action="Index" class="btn btn-secondary">الرجوع إلى القائمة</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // عرض البريفيو قبل الحفظ
+        const fileInput = document.getElementById('imageFile');
+        const preview = document.getElementById('preview');
+        const currentImg = document.getElementById('currentImg');
+
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    if (currentImg) currentImg.style.opacity = '0.3'; // تظليل الصورة القديمة
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+                if (currentImg) currentImg.style.opacity = '1';
+            }
+        });
+    </script>
+}
