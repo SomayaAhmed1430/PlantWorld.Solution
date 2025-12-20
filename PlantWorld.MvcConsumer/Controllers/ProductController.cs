@@ -154,7 +154,7 @@ namespace PlantWorld.MvcConsumer.Controllers
         }
 
         // Get: Product/Delete/id
-        public async Task<IActionResult> Delete (int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var product = await _productService.GetByIdAsync(id);
 
@@ -166,7 +166,7 @@ namespace PlantWorld.MvcConsumer.Controllers
         // Post: Product/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed (int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _productService.DeleteAsync(id);
 
@@ -174,6 +174,16 @@ namespace PlantWorld.MvcConsumer.Controllers
             TempData["AlertType"] = "danger";
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // Get: Product/Details/id
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+
+            if (product == null) return NotFound();
+
+            return View(product);
         }
     }
 }

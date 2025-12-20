@@ -1,0 +1,51 @@
+﻿@model PlantWorld.MvcConsumer.Models.ProductDTOs.ProductDTO
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Product Details";
+}
+
+<h2 class="mb-4 text-primary">تفاصيل القسم</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 600px;">
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الإسم:</h5>
+        <p class="form-control-plaintext">@Model.Name</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الوصف:</h5>
+        <p class="form-control-plaintext">@Model.Description</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">السعر:</h5>
+        <p class="form-control-plaintext">@Model.Price</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">القسم التابع ليه:</h5>
+        <p class="form-control-plaintext">@Model.CategoryName</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الصورة:</h5>
+        @if (!string.IsNullOrEmpty(Model.ImgUrl))
+        {
+            <img src="@Model.ImgUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="height: 150px; width: 300px; margin-bottom: 20px" />
+        }
+        else
+        {
+            <p class="text-muted">مفيش صور متاحه القسم دا.</p>
+        }
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">تعديل</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">حذف</a>
+        <a asp-action="Index" class="btn btn-secondary">ارجع للقائمة</a>
+    </div>
+
+
+
+
+</div>
