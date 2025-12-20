@@ -27,20 +27,34 @@ namespace PlantWorld.MvcConsumer.Controllers
         public async Task<IActionResult> Create()
         {
             var categories = await _categoryService.GetAllAsync();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            return View();
+
+            var vm = new ProductCreateViewModel
+            {
+                Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+            };
+
+            return View(vm);
         }
 
 
         // Post: Product/Create
         [HttpPost]
-        public async Task<IActionResult> Create(ProductCreateDTO productDto, IFormFile imageFile)
+        public async Task<IActionResult> Create(ProductCreateViewModel vm, IFormFile imageFile)
         {
             if (!ModelState.IsValid)
             {
                 var categories = await _categoryService.GetAllAsync();
-                ViewBag.Categories = new SelectList(categories, "Id", "Name");
-                return View(productDto);
+                vm.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                });
+
+                return View(vm);
             }
 
             // رفع الصورة (زي ما عملنا قبل كده)
@@ -56,15 +70,16 @@ namespace PlantWorld.MvcConsumer.Controllers
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await imageFile.CopyToAsync(stream);
 
-                productDto.ImgUrl = "/images/products/" + fileName;
+                vm.Product.ImgUrl = "/images/products/" + fileName;
             }
 
-            await _productService.AddAsync(productDto);
+            await _productService.AddAsync(vm.Product);
 
-            TempData["AlertMessage"] = "تم إضافة المنتج بنجاح!";
+            TempData["AlertMessage"] = "تم إضافة المنتج بنجاح";
             TempData["AlertType"] = "success";
 
             return RedirectToAction(nameof(Index));
+
         }
 
 
