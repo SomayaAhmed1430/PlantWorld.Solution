@@ -1,0 +1,55 @@
+﻿@model PlantWorld.MvcConsumer.Models.ProductDTOs.ProductDTO
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Delete Products";
+}
+
+<h2 class="text-danger mb-4" style="color: red">  هل انت متأكد من حذف هذا المنتج؟ </h2>
+
+<h2 class="mb-4 text-primary">تفاصيل المنتج</h2>
+
+<div class="card shadow-sm p-4" style="max-width: 600px;">
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الإسم:</h5>
+        <p class="form-control-plaintext">@Model.Name</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الوصف:</h5>
+        <p class="form-control-plaintext">@Model.Description</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">السعر:</h5>
+        <p class="form-control-plaintext">@Model.Price جنية</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">القسم التابع ليه:</h5>
+        <p class="form-control-plaintext">@Model.CategoryName</p>
+    </div>
+
+    <div class="mb-3">
+        <h5 class="fw-bold text-secondary">الصورة:</h5>
+        @if (!string.IsNullOrEmpty(Model.ImgUrl))
+        {
+            <img src="@Model.ImgUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="height: 150px; width: 300px; margin-bottom: 20px" />
+        }
+        else
+        {
+            <p class="text-muted"> مفيش صورة متاحه للمنتج دا.</p>
+        }
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <button style="background-color: red" type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i> حذف
+        </button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">
+            <i class="bi bi-arrow-left"></i> الرجوع
+        </a>
+    </form>
+</div>

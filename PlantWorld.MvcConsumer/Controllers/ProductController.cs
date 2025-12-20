@@ -152,5 +152,28 @@ namespace PlantWorld.MvcConsumer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        // Get: Product/Delete/id
+        public async Task<IActionResult> Delete (int id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
+
+        // Post: Product/Delete/id
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed (int id)
+        {
+            await _productService.DeleteAsync(id);
+
+            TempData["AlertMessage"] = "تم حذف المنتج بنجاح";
+            TempData["AlertType"] = "danger";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
