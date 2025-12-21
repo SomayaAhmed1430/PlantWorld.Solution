@@ -1,3 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: careemregu;
+    line-height: 30px;
+    list-style: none;
+    /*    border: 1px solid red ;*/
+}
+
+@font-face {
+    font-family: careemRegu;
+    src: url(/fonts/careemRegular.otf);
+}
+
+@font-face {
+    font-family: careemBold;
+    src: url(/fonts/careemBold.otf);
+}
+
 html {
   font-size: 14px;
 }
