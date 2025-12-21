@@ -11,13 +11,13 @@
     <div class="form-group mb-3">
         <label asp-for="Product.Name" class="form-label">الإسم </label>
         <input asp-for="Product.Name" class="form-control" placeholder="أدخل إسم المنتج" />
-        <span asp-validation-for="Product.Name" class="text-danger"></span>
+        <span asp-validation-for="Product.Name" style="color:red" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="Product.Description" class="form-label">الوصف (إختياري)</label>
         <textarea asp-for="Product.Description" class="form-control" placeholder="أدخل الوصف"></textarea>
-        <span asp-validation-for="Product.Description" class="text-danger"></span>
+        <span asp-validation-for="Product.Description" style="color:red" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -27,18 +27,19 @@
                 class="form-select">
             <option value="">-- اختر القسم --</option>
         </select>
-        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+        <span asp-validation-for="Product.CategoryId" style="color:red" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label asp-for="Product.Price" class="form-label">السعر</label>
         <textarea asp-for="Product.Price" class="form-control" placeholder="أدخل سعر المنتج"></textarea>
-        <span asp-validation-for="Product.Price" class="text-danger"></span>
+        <span asp-validation-for="Product.Price" style="color:red" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3">
         <label for="imageFile" class="form-label">إختار الصورة (إختياري)</label>
         <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*" />
+        <span asp-validation-for="Product.ImgUrl" style="color:red" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
