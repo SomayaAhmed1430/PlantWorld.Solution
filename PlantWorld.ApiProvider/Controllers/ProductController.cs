@@ -61,6 +61,9 @@ namespace PlantWorld.ApiProvider.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductCreateDTO productDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var product = new Product
             {
                 Name = productDto.Name,

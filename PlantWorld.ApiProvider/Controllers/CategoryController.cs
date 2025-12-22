@@ -59,6 +59,9 @@ namespace PlantWorld.ApiProvider.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryCreateDTO categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var category = new Category
             {
                 Name = categoryDto.Name,
