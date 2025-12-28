@@ -131,5 +131,22 @@ namespace PlantWorld.ApiProvider.Controllers
         }
 
 
+        // PUT: api/Checkout/{id}/status  (Update Order Status => Admin)
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, UpdateCheckoutStatusDTO dto)
+        {
+            var order = await _checkoutRepo.GetByIdAsync(id);
+
+            if (order == null)
+                return NotFound($"Order with id {id} not found");
+            
+            var updated = await _checkoutRepo.UpdateStatusAsync(id, dto.Status);
+           
+            if (!updated)
+                return StatusCode(500, "Failed to update order status");
+            
+            return Ok(new { message = "Order status updated successfully" });
+        }
+
     }
 }
