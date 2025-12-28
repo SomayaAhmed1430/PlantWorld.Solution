@@ -71,8 +71,33 @@ namespace PlantWorld.ApiProvider.Controllers
             });
         }
 
-        
 
+        // GET: api/Checkout  (Get All Orders => Admin)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var orders = await _checkoutRepo.GetAllAsync();
+
+            var checkoutDTOs = orders.Select(c => new CheckoutDetailsDTO
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Phone = c.Phone,
+                City = c.City,
+                Address = c.Address,
+                CreatedAt = c.CreatedAt,
+                TotalAmount = c.TotalAmount,
+                Status = c.Status.ToString(),
+                Items = c.OrderItems?.Select(oi => new CheckoutItemDetailsDTO
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.Name,
+                    Quantity = oi.Quantity,
+                    Price = oi.Price
+                }).ToList() ?? new List<CheckoutItemDetailsDTO>()
+            }).ToList();
+            return Ok(checkoutDTOs);
+        }
 
     }
 }
