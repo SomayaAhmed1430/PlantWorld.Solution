@@ -13,7 +13,7 @@ namespace PlantWorld.ApiProvider.Controllers
         private readonly IProductRepository _productRepo;
 
         public CheckoutController(
-            ICheckoutRepository checkoutRepo,IProductRepository productRepo)
+            ICheckoutRepository checkoutRepo, IProductRepository productRepo)
         {
             _checkoutRepo = checkoutRepo;
             _productRepo = productRepo;
@@ -98,6 +98,38 @@ namespace PlantWorld.ApiProvider.Controllers
             }).ToList();
             return Ok(checkoutDTOs);
         }
+
+
+        // GET: api/Checkout/{id}  (Get Order By Id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var order = await _checkoutRepo.GetByIdAsync(id);
+
+            if (order == null)
+                return NotFound($"Order with id {id} not found");
+
+            var checkoutDTO = new CheckoutDetailsDTO
+            {
+                Id = order.Id,
+                Name = order.Name,
+                Phone = order.Phone,
+                City = order.City,
+                Address = order.Address,
+                CreatedAt = order.CreatedAt,
+                TotalAmount = order.TotalAmount,
+                Status = order.Status.ToString(),
+                Items = order.OrderItems?.Select(oi => new CheckoutItemDetailsDTO
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.Name,
+                    Quantity = oi.Quantity,
+                    Price = oi.Price
+                }).ToList() ?? new List<CheckoutItemDetailsDTO>()
+            };
+            return Ok(checkoutDTO);
+        }
+
 
     }
 }
