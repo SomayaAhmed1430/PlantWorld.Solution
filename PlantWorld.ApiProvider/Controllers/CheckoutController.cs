@@ -18,5 +18,61 @@ namespace PlantWorld.ApiProvider.Controllers
             _checkoutRepo = checkoutRepo;
             _productRepo = productRepo;
         }
+
+        // POST: api/Checkout  (Create Order)
+        [HttpPost]
+        public async Task<IActionResult> Create(CheckoutCreateDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (dto.Items == null || !dto.Items.Any())
+                return BadRequest("Order must contain at least one item");
+
+            var checkout = new Checkout
+            {
+                Name = dto.Name,
+                Phone = dto.Phone,
+                City = dto.City,
+                Address = dto.Address,
+                CreatedAt = DateTime.UtcNow,
+                Status = OrderStatus.Pending,
+                OrderItems = new List<OrderItem>()
+            };
+
+            decimal totalAmount = 0;
+
+            foreach (var item in dto.Items)
+            {
+                var product = await _productRepo.GetByIdAsync(item.ProductId);
+
+                if (product == null)
+                    return BadRequest($"Product with id {item.ProductId} not found");
+
+                var orderItem = new OrderItem
+                {
+                    ProductId = product.Id,
+                    Quantity = item.Quantity,
+                    Price = product.Price
+                };
+
+                totalAmount += product.Price * item.Quantity;
+                checkout.OrderItems.Add(orderItem);
+            }
+
+            checkout.TotalAmount = totalAmount;
+
+            await _checkoutRepo.CreateAsync(checkout);
+
+            return Ok(new
+            {
+                message = "Order created successfully",
+                orderId = checkout.Id
+            });
+        }
+
+        
+
+
     }
 }
