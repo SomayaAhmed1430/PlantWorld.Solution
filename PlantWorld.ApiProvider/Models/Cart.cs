@@ -6,6 +6,7 @@ namespace PlantWorld.ApiProvider.Models
     {
         public int Id { get; set; }
 
+        public string SessionId { get; set; } 
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }
@@ -13,7 +14,7 @@ namespace PlantWorld.ApiProvider.Models
 
 
         public int Quantity { get; set; }
-        public decimal TotalPrice => Quantity * Product.Price;
-        public DateTime CreatedAt { get; set; }
+        public decimal TotalPrice => Product != null ? Quantity * Product.Price : 0;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
