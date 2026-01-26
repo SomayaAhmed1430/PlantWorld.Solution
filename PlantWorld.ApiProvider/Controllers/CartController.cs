@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlantWorld.ApiProvider.DTOs.CartDTOs;
+using PlantWorld.ApiProvider.Models;
 using PlantWorld.ApiProvider.Repositories.Interfaces;
 
 namespace PlantWorld.ApiProvider.Controllers
@@ -40,6 +41,26 @@ namespace PlantWorld.ApiProvider.Controllers
             };
 
             return Ok(cartDto);
+        }
+
+
+        //POST: api/cart 
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(CartCreateDTO createDto)
+        {
+            var product = await _productRepo.GetByIdAsync(createDto.ProductId);
+            if (product == null) return BadRequest($"Product with id {createDto.ProductId} not found");
+
+            var cartItem = new Cart
+            {
+                SessionId = createDto.SessionId,
+                ProductId = product.Id,
+                Quantity = createDto.Quantity,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _cartRepo.AddAsync(cartItem);
+            return Ok(new { message = "Item added to cart successfully" });
         }
     }
 }
