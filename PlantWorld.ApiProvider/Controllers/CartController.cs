@@ -62,5 +62,22 @@ namespace PlantWorld.ApiProvider.Controllers
             await _cartRepo.AddAsync(cartItem);
             return Ok(new { message = "Item added to cart successfully" });
         }
+
+
+        // DELETE: api/cart/{id}   
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveItem(int id)
+        {
+            await _cartRepo.RemoveAsync(id);
+            return Ok(new { message = "Item removed from cart" });
+        }
+
+        // DELETE: api/cart/clear/{sessionId}
+        [HttpDelete("clear/{sessionId}")]
+        public async Task<IActionResult> ClearCart(string sessionId)
+        {
+            await _cartRepo.ClearAsync(sessionId);
+            return Ok(new { message = "Cart cleared" });
+        }
     }
 }
