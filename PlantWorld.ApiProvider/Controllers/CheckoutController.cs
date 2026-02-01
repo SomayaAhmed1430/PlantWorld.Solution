@@ -11,12 +11,14 @@ namespace PlantWorld.ApiProvider.Controllers
     {
         private readonly ICheckoutRepository _checkoutRepo;
         private readonly IProductRepository _productRepo;
+        private readonly ICartRepository _cartRepo;
 
         public CheckoutController(
-            ICheckoutRepository checkoutRepo, IProductRepository productRepo)
+            ICheckoutRepository checkoutRepo, IProductRepository productRepo, ICartRepository cartRepo)
         {
             _checkoutRepo = checkoutRepo;
             _productRepo = productRepo;
+            _cartRepo = cartRepo;
         }
 
         // POST: api/Checkout  (Create Order)
@@ -146,6 +148,58 @@ namespace PlantWorld.ApiProvider.Controllers
                 return StatusCode(500, "Failed to update order status");
             
             return Ok(new { message = "Order status updated successfully" });
+        }
+
+
+        // POST: api/Checkout/from-cart  (Create Order from Cart)
+        [HttpPost("from-cart")]
+        public async Task<IActionResult> CreateFromCart(CheckoutFromCartDTO dto)
+        {
+            var cartItems = (await _cartRepo.GetAllAsync())
+                            .Where(c => c.SessionId == dto.SessionId)
+                            .ToList();
+
+            if (!cartItems.Any())
+                return BadRequest("Cart is empty");
+
+            var checkout = new Checkout
+            {
+                Name = dto.Name,
+                Phone = dto.Phone,
+                City = dto.City,
+                Address = dto.Address,
+                CreatedAt = DateTime.UtcNow,
+                Status = OrderStatus.Pending,
+                OrderItems = new List<OrderItem>()
+            };
+
+            decimal totalAmount = 0;
+
+            foreach (var item in cartItems)
+            {
+                var orderItem = new OrderItem
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = item.Product.Price
+                };
+
+                totalAmount += orderItem.Price * orderItem.Quantity;
+                checkout.OrderItems.Add(orderItem);
+            }
+
+            checkout.TotalAmount = totalAmount;
+
+            await _checkoutRepo.CreateAsync(checkout);
+
+            // نفرغ الكارت
+            await _cartRepo.ClearAsync(dto.SessionId);
+
+            return Ok(new
+            {
+                message = "Order created successfully",
+                orderId = checkout.Id
+            });
         }
 
     }
