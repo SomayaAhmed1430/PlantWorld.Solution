@@ -26,9 +26,11 @@ namespace PlantWorld.MvcConsumer.Services.Implementations
 
         public async Task<bool> UpdateStatusAsync(int id, string status)
         {
+            var parsedStatus = Enum.Parse<OrderStatus>(status);
+
             var dto = new UpdateOrderStatusDTO
             {
-                Status = status
+                Status = parsedStatus
             };
 
             var response = await _httpClient
@@ -36,6 +38,7 @@ namespace PlantWorld.MvcConsumer.Services.Implementations
 
             return response.IsSuccessStatusCode;
         }
+
 
     }
 }

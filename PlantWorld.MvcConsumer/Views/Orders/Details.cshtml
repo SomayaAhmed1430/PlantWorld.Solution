@@ -1,0 +1,95 @@
+﻿@model PlantWorld.MvcConsumer.Models.OrderDTOs.OrderDTO
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "تفاصيل الطلب";
+
+    
+    (string Text, string Color) GetStatusArabicAndColor(string status)
+    {
+        return status switch
+        {
+            "Pending" => ("مُعلق/إنتظار", "orange"),
+            "Processing" => ("تجهيز", "blue"),
+            "Completed" => ("مكتمل", "green"),
+            "Shipped" => ("تم الشحن", "purple"),
+            "Delivered" => ("تم التوصيل/ التسليم", "darkgreen"),
+            "Cancelled" => ("ملغي", "red"),
+            _ => (status, "gray")
+        };
+    }
+}
+
+<h2>تفاصيل الطلب رقم @Model.Id</h2>
+
+<br />
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-secondary">رجوع للطلبات</a>
+</div>
+
+<br />
+<div class="card mb-3">
+    <div class="card-header">بيانات العميل</div>
+    <div class="card-body">
+        <p><strong>الإسم:</strong> @Model.Name</p>
+        <p><strong>الهاتف:</strong> @Model.Phone</p>
+        <p><strong>المدينة:</strong> @Model.City</p>
+        <p><strong>العنوان:</strong> @Model.Address</p>
+
+        <p>
+            <strong>حالة الطلب:</strong>
+
+            <form asp-action="UpdateStatus" method="post" >
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <select name="status" onchange="this.form.submit()"
+                        style="background-color:@GetStatusArabicAndColor(Model.Status).Color;
+                       color:white;
+                       font-weight:bold;
+                       border-radius:4px;">
+                    <option value="Pending">مُعلق/إنتظار</option>
+                    <option value="Processing">تجهيز</option>
+                    <option value="Completed">مكتمل</option>
+                    <option value="Shipped">تم الشحن</option>
+                    <option value="Delivered">تم التوصيل/ التسليم</option>
+                    <option value="Cancelled">ملغي</option>
+                </select>
+            </form>
+        </p>
+
+        <p><strong>تاريخ الإنشاء:</strong> @Model.CreatedAt.ToShortDateString()</p>
+        <p><strong>إجمالي المبلغ:</strong> @Model.TotalAmount جنيه</p>
+    </div>
+</div>
+
+<br />
+<div class="card">
+    <div class="card-header">المنتجات</div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>الصورة</th>
+                    <th>اسم المنتج</th>
+                    <th>الكمية</th>
+                    <th>السعر</th>
+                    <th>المجموع</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.ProductImageUrl" alt="@item.ProductName" style="width:60px; height:60px;" />
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price</td>
+                        <td>@(item.Quantity* item.Price)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

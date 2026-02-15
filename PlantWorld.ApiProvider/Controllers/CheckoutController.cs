@@ -126,6 +126,7 @@ namespace PlantWorld.ApiProvider.Controllers
                 {
                     ProductId = oi.ProductId,
                     ProductName = oi.Product.Name,
+                    ProductImageUrl = oi.Product.ImgUrl,
                     Quantity = oi.Quantity,
                     Price = oi.Price
                 }).ToList() ?? new List<CheckoutItemDetailsDTO>()
