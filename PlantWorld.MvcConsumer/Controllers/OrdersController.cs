@@ -10,9 +10,15 @@ namespace PlantWorld.MvcConsumer.Controllers
         {
             _orderService = orderService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? status)
         {
             var orders = await _orderService.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                orders = orders.Where(o => o.Status == status).ToList();
+            }
+
             return View(orders);
         }
     }
