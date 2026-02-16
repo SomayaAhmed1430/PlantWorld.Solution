@@ -100,3 +100,30 @@
 </table>
 
 
+<div class="d-flex justify-content-center mt-4">
+
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a class="btn btn-outline-success me-2"
+           asp-action="Index"
+           asp-route-page="@(ViewBag.CurrentPage - 1)">
+            Previous
+        </a>
+    }
+
+    <span class="align-self-center">
+        Page @ViewBag.CurrentPage of @ViewBag.TotalPages
+    </span>
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a class="btn btn-outline-success ms-2"
+           asp-action="Index"
+           asp-route-page="@(ViewBag.CurrentPage + 1)">
+            Next
+        </a>
+    }
+
+</div>
+
+
