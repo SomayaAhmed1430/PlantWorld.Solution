@@ -100,30 +100,25 @@
 </table>
 
 
-<div class="d-flex justify-content-center mt-4">
-
-    @if (ViewBag.CurrentPage > 1)
+@* Pagination *@
+<div class="pagination">
+    @if (ViewBag.TotalPages > 1)
     {
-        <a class="btn btn-outline-success me-2"
-           asp-action="Index"
-           asp-route-page="@(ViewBag.CurrentPage - 1)">
-            Previous
-        </a>
+        for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <span class="btn btn-dark m-1">@i</span>
+            }
+            else
+            {
+                <a class="btn btn-outline-dark m-1" href="/Orders/Index?page=@i">@i</a>
+            }
+        }
     }
-
-    <span class="align-self-center">
-        Page @ViewBag.CurrentPage of @ViewBag.TotalPages
-    </span>
-
-    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-    {
-        <a class="btn btn-outline-success ms-2"
-           asp-action="Index"
-           asp-route-page="@(ViewBag.CurrentPage + 1)">
-            Next
-        </a>
-    }
-
 </div>
-
-
+<style>
+    .pagination {
+        margin-top: 20px;
+    }
+</style>

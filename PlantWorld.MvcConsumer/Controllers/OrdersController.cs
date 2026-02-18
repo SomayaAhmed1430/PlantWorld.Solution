@@ -10,11 +10,16 @@ namespace PlantWorld.MvcConsumer.Controllers
         {
             _orderService = orderService;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string? status, int page = 1)
         {
-            int pageSize = 10;
+            int pageSize = 10; 
 
             var orders = await _orderService.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                orders = orders.Where(o => o.Status == status).ToList();
+            }
 
             var totalOrders = orders.Count();
             var totalPages = (int)Math.Ceiling(totalOrders / (double)pageSize);
@@ -26,6 +31,7 @@ namespace PlantWorld.MvcConsumer.Controllers
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
+            ViewBag.Status = status; 
 
             return View(pagedOrders);
         }
