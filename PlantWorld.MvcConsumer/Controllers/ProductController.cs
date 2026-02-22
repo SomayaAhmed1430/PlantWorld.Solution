@@ -17,10 +17,24 @@ namespace PlantWorld.MvcConsumer.Controllers
         }
 
         // Get: Product/Index
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 4;
+
             var products = await _productService.GetAllAsync();
-            return View(products);
+
+            var totalProducts = products.Count();
+            var totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
+
+            var pagedProducts = products
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(pagedProducts);
         }
 
         // Get: Product/Create

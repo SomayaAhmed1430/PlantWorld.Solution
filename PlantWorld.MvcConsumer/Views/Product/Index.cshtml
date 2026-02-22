@@ -43,3 +43,25 @@
 </table>
 
 
+@* Pagination *@
+<div class="pagination">
+    @if (ViewBag.TotalPages > 1)
+    {
+        for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <span class="btn btn-dark m-1">@i</span>
+            }
+            else
+            {
+                <a class="btn btn-outline-dark m-1" href="/Product/Index?page=@i">@i</a>
+            }
+        }
+    }
+</div>
+<style>
+    .pagination {
+        margin-top: 20px;
+    }
+</style>
