@@ -4,7 +4,7 @@ using PlantWorld.MvcConsumer.Models.ProductDTOs;
 using PlantWorld.MvcConsumer.Services.Implementations;
 using PlantWorld.MvcConsumer.Services.Interfaces;
 
-namespace PlantWorld.MvcConsumer.Controllers
+namespace PlantWorld.MvcConsumer.Controllers.Dashboard
 {
     public class ProductController : Controller
     {

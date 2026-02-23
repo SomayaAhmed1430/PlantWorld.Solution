@@ -2,7 +2,7 @@
 using PlantWorld.MvcConsumer.Models.CategoryDTOs;
 using PlantWorld.MvcConsumer.Services.Interfaces;
 
-namespace PlantWorld.MvcConsumer.Controllers
+namespace PlantWorld.MvcConsumer.Controllers.Dashboard
 {
     public class CategoryController : Controller
     {
