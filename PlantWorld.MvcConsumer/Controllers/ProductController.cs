@@ -19,7 +19,7 @@ namespace PlantWorld.MvcConsumer.Controllers
         // Get: Product/Index
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 4;
+            int pageSize = 10;
 
             var products = await _productService.GetAllAsync();
 
